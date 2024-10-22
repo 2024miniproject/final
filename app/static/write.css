@@ -1,0 +1,331 @@
+.backbox{
+
+    position: absolute;
+    width: 1180px;
+    height: 940px;
+    left: 223px;
+    top: 154px;
+
+    background: #CCCCCC;
+    box-shadow: 5px 4px 4px rgba(0, 0, 0, 0.25);;
+    border-radius: 0px 10px 0px 0px;
+
+}
+
+.writebox{
+
+    z-index: 2;
+    position: absolute;
+    width: 1185px;
+    height: 1018px;
+    right: 123px;
+    bottom: -138px;
+    left: 135px;
+    top: 75px;
+
+    background: #F1F1F1;
+    box-shadow: 15px 5px 4px rgba(0, 0, 0, 0.25);
+    border-radius: 0px 16px 0px 0px;
+
+
+}
+
+.circle1{
+    left: 36px;
+    top: 36px;
+    z-index: 3;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+
+    position: relative;
+    width: 58px;
+    height: 58px;
+
+    box-shadow: inset 9px 4px 4px rgba(0, 0, 0, 0.25);
+    background: white;
+    backdrop-filter: blur(25px);
+    border-radius: 100px;
+
+}
+
+.circle2{
+
+    top: 76px;
+    left: 36px;
+    z-index: 3;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+
+    position: relative;
+    width: 58px;
+    height: 58px;
+    background: white;
+    box-shadow: inset 6px 4px 4px rgba(0, 0, 0, 0.25);
+    backdrop-filter: blur(25px);
+    /* Note: backdrop-filter has minimal browser support */
+    border-radius: 100px;
+
+}
+
+.circle3{
+
+    top: 116px;
+    left: 36px;
+    z-index: 3;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+
+    background: white;
+    position: relative;
+    width: 58px;
+    height: 58px;
+
+    box-shadow: inset 4px 4px 4px rgba(0, 0, 0, 0.25);
+    backdrop-filter: blur(25px);
+    /* Note: backdrop-filter has minimal browser support */
+    border-radius: 100px;
+
+}
+
+.line1{
+
+    top: 124px;
+    left: 141px;
+    width: 976px;
+    height: 0px;
+
+    border: 1px solid #CAC4D0;
+
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+    position: absolute;
+    width: 976px;
+
+    order: 0;
+    flex-grow: 0;
+
+}
+
+.line2{
+
+    left: 141px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+
+    position: absolute;
+    width: 976px;
+
+}
+
+.title{
+
+    z-index: 4;
+    position: absolute;
+    height: 36px;
+    left: 141px;
+    top: 90px;
+
+    /* M3/headline/medium */
+    font-family: 'Roboto';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 23px;
+    font-weight: bold;
+    line-height: 36px;
+    /* identical to box height, or 129% */
+    display: flex;
+    align-items: center;
+    text-align: center;
+
+    color: #000000;
+
+
+}
+
+.titlearea{
+
+    z-index: 4;
+    position: absolute;
+    height: 36px;
+    left: 200px;
+    top: 87px;
+
+    /* M3/headline/medium */
+    font-family: 'Roboto';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 20px;
+    line-height: 36px;
+    /* identical to box height, or 129% */
+    /*display: flex;*/
+    align-items: center;
+    color: #000000;
+
+    border: none;
+    outline: none;
+    background-color: transparent;
+    white-space: nowrap;
+    overflow: hidden;
+    resize: none;
+    display: inline-block;
+    min-width: 916px;
+    max-width: 100%;
+    text-align: left;
+}
+
+.price{
+
+    z-index: 4;
+    position: absolute;
+    height: 31px;
+    left: 141px;
+    top: 145px;
+
+    /* M3/headline/medium */
+    font-family: 'Roboto';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 23px;
+    font-weight: bold;
+    line-height: 36px;
+    /* or 129% */
+    display: flex;
+    align-items: center;
+
+    color: #000000;
+
+}
+
+.pricearea{
+
+    z-index: 4;
+    position: absolute;
+    height: 36px;
+    left: 200px;
+    top: 140px;
+
+    /* M3/headline/medium */
+    font-family: 'Roboto';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 20px;
+    line-height: 36px;
+    display: flex;
+    align-items: center;
+    /*text-align: center;*/
+
+    color: #000000;
+
+
+    border: none;
+    outline: none;
+    background-color: transparent;
+    white-space: nowrap;
+    overflow: hidden;
+    resize: none;
+    display: inline-block;
+    min-width: 916px;
+    max-width: 100%;
+    text-align: left;
+}
+
+.textarea {
+    position: absolute;
+    left: 141px;
+    top: 200px;
+    min-width: 976px;
+    font-family: 'Roboto';
+    height: auto;
+    font-size: 20px;
+    background-color: transparent;
+    border: none;
+    resize: none;
+    margin-bottom: 40px;
+}
+
+/*text area width 설정 넓히려는데 안? 됨?*/
+
+.textarea:focus {
+    outline: none;
+}
+
+.publish-button {
+    position: fixed; /* 고정 위치 */
+    right: 36px; /* 오른쪽 여백 */
+    bottom: 56px; /* 아래쪽 여백 */
+    width: 140px; /* 정사각형 너비 */
+    height: 58px; /* 정사각형 높이 */
+    padding: 10px 20px;
+
+    font-size: 18px;
+    font-family: 'Roboto';
+    font-style: normal;
+    font-size: 14px;
+
+    background-color: #F65757; /* 버튼 배경색 */
+    color: white; /* 버튼 글자색 */
+    border: none; /* 테두리 없음 */
+    border-radius: 50px; /* 모서리 둥글게 */
+    cursor: pointer; /* 커서 포인터로 변경 */
+}
+
+.publish-button:hover {
+    background-color: #B3261E; /* 호버 시 색상 변화 */
+}
+
+.upload-box {
+    z-index: 7;
+    position: fixed; /* 고정 위치 */
+    right: 45px; /* 오른쪽 여백 */
+    bottom: 126px; /* 아래쪽 여백 */
+
+    width: 123px; /* 정사각형 너비 */
+    height: 123px; /* 정사각형 높이 */
+    background-color: #D9D9D9; /* 배경색 */
+    display: flex;
+    justify-content: center; /* 수평 중앙 정렬 */
+    align-items: center; /* 수직 중앙 정렬 */
+    cursor: pointer; /* 커서 포인터로 변경 */
+    margin: 20px auto; /* 위 아래 여백, 중앙 정렬 */
+    font-size: 23px;
+    font-family: 'Roboto';
+    font-style: bold;
+}
+
+.upload-box:hover {
+    background-color: #d0d0d0; /* 호버 시 배경색 변화 */
+}
+
+#image-container {
+
+    display: flex; /* 가로 정렬 */
+    flex-direction: row; /* 가로 방향 */
+    align-items: center; /* 수직 중앙 정렬 */
+    position: fixed; /* 혹은 static */
+    bottom: 20px; /* 화면 하단에서 20px 떨어지게 */
+    left: 141px; /* 왼쪽에서 141px 떨어짐 */
+    width: 100%; /* 전체 너비 차지 */
+    margin-left: 141px; /* 부모 요소에서 141px 떨어지게 */
+    padding-bottom: 20px; /* 텍스트가 사진과 겹치지 않게 여백 추가 */
+
+    overflow: auto;
+    float: left;
+
+}
+
+.image-preview {
+    z-index: 6;
+    display: inline-block;
+    width: 120px ;
+    height: 120px ;
+    object-fit: cover;
+    margin: 0 10px;
+}

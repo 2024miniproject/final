@@ -1,0 +1,194 @@
+.title {
+
+    position: absolute;
+    width: 609px;
+    height: 40px;
+    left: 84px;
+    top: 254px;
+    
+    /* M3/display/large */
+    font-family: 'Roboto';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 57px;
+    line-height: 64px;
+    /* or 112% */
+    display: flex;
+    align-items: center;
+    letter-spacing: -0.25px;
+    color: #000000; font-weight: bold;
+
+}
+
+.subtitle {
+
+    position: absolute;
+    width: 448px;
+    height: 137px;
+    left: 84px;
+    top: 349px;
+    
+    /* M3/label/large */
+    font-family: 'Roboto';
+    font-style: normal;
+    font-weight: 500;
+    font-size: 14px;
+    line-height: 20px;
+    /* or 143% */
+    display: flex;
+    align-items: center;
+    letter-spacing: 0.1px;
+    
+    color: #000000;    
+
+}
+
+.backsqr1{
+
+    z-index: 2;
+    position: absolute;
+    width: 541px;
+    height: 735px;
+    left: 722.5px;
+    top: 57px;
+    
+    background: #F5F5F5;
+    box-shadow: 0px 15px 4px rgba(0, 0, 0, 0.25);
+
+}
+
+.backsqr2{
+
+    z-index: 1;
+
+    position: absolute;
+    width: 541px;
+    height: 735px;
+    left: 802.5px;
+    top: 92px;
+    
+    background: #D9D9D9;
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+
+}
+
+.idtext{
+
+    z-index: 3;
+    position: absolute;
+    width: 40px;
+    height: 20px;
+    left: 810.5px;
+    top: 137px;
+    font-family: 'Roboto';
+    font-style: normal;
+    font-weight: 350;
+    font-size: 14px;
+    line-height: 20px;
+    letter-spacing: 0.1px;
+    color: #000000;
+
+}
+
+.idsubmit{
+
+    z-index: 6; border: none;
+    position: absolute;
+    width: 375px;
+    height: 54px;
+    left: 807.5px;
+    top: 172px; 
+    background: #D9D9D9;
+    border-radius: 12px;
+}
+
+.pwtext{
+
+    z-index: 3;
+    position: absolute;
+    width: 62px;
+    height: 20px;
+    left: 810.5px;
+    top: 219px;
+    font-family: 'Roboto';
+    font-style: normal;
+    font-weight: 500;
+    font-size: 14px;
+    line-height: 20px;
+    letter-spacing: 0.1px;
+    color: #000000;
+
+}
+
+.pwsubmit{
+
+    z-index: 6;
+    position: absolute;
+    width: 375px;
+    height: 54px;
+    left: 807.5px;
+    top: 254px;
+    border: none;
+    background: #D9D9D9;
+    border-radius: 12px;
+
+}
+
+.loginbutton{
+
+    position: absolute;
+    left:800.5px;
+    top: 344px;
+    z-index: 5;
+    width: 387px;
+    height: 20px;
+    border: none;
+    background: none;
+    text-align:left;
+
+    font-family: 'Roboto';
+    font-style: normal;
+    font-weight: 500;
+    font-size: 14px;
+    line-height: 20px;
+    letter-spacing: 0.1px;
+    text-decoration: none;  /* 밑줄 제거 */
+    color: #49454F;
+}
+
+.signup{
+
+    z-index: 3;
+    position: absolute;
+    width: 160px;
+    height: 20px;
+    left: 1025px;
+    top: 600px;
+    font-family: 'Roboto';
+    font-style: normal;
+    font-weight: 500;
+    font-size: 14px;
+    line-height: 20px;
+    letter-spacing: 0.1px;
+    color: #000000;   
+
+}
+
+.signupbutton{
+
+    display: inline-block; z-index: 3; position: absolute;
+    width: 375px;
+    height: 54px;
+    left: 807.5px;
+    top: 656px;
+    background: #F65757;
+    border-radius: 12px;
+    border: none;
+    color: white;
+    font-size: 16px;
+    text-align: center;
+    line-height: 54px;
+    text-decoration: none;  /* 밑줄 제거 */
+    cursor: pointer;
+        
+}

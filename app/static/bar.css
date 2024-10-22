@@ -1,0 +1,100 @@
+.sidebar {
+
+    width: 80px;
+    height: 100vh;
+    background-color: #0F124D;;
+    color: white;
+    position: fixed;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-top: 20px;
+
+    left: 0;
+    top: 0;
+}
+
+
+.logo img {
+    width: 50px;
+    margin-bottom: 20px;
+    margin-left: 6px;
+}
+
+
+.menu {
+    list-style-type: none;
+    padding: 0;
+    justify-content: center;
+    align-items: center;
+}
+
+
+.menu li {
+    margin: 20px 0;
+}
+
+
+.menu li a {
+
+    color: white;
+    text-decoration: none;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    font-size: 14px;
+}
+
+
+.icon {
+    font-size: 24px;
+    margin-bottom: 5px;
+}
+
+
+.plus-button {
+    margin-top: auto;
+    background-color: #FFD8E4;
+    border: none;
+    border-radius: 16px;
+    width: 50px;
+    height: 50px;
+    font-size: 24px;
+    color:#0F124D;
+    cursor: pointer;
+    display: flex;              /* 버튼 안의 텍스트를 정렬하기 위해 플렉스박스 사용 */
+    justify-content: center;    /* 수평 중앙 정렬 */
+    align-items: center;        /* 수직 중앙 정렬 */
+    margin-left: 2px;
+    padding: 20px;
+}
+
+.logout {
+    font-family: roboto;
+    box-sizing: border-box;
+
+    /* Auto layout */
+    display: flex;
+
+    justify-content: center;
+    align-items: center;
+
+    position: absolute;
+    left: 11px;
+    bottom: 35px;
+    width: 59px;
+    height: 29px;
+
+    background: #F65757;
+    border-radius: 8px;
+
+    font-size: 10px;
+    color: white;
+    cursor: pointer;
+}
+
+/* 눌림 효과 제거 */
+.logout:active {
+    transform: none; /* 눌릴 때 변형 효과 제거 */
+    box-shadow: none; /* 그림자 효과 제거 */
+}

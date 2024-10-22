@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container">
+    <h5 class="my-3 border-bottom pb-2">이메일 인증</h5>
+    <form method="post">
+        {{ form.csrf_token }}
+        <div class="mb-3">
+            <label for="code">인증 코드</label>
+            {{ form.code(class="form-control", placeholder="이메일로 전송된 인증 코드를 입력하세요") }}
+        </div>
+        <button type="submit" class="btn btn-primary">인증하기</button>
+    </form>
+
+    <div class="mt-3">
+        <form action="{{ url_for('auth.resend_verification_email', user_id=user.id) }}" method="post">
+            <button type="submit" class="btn btn-secondary">인증 코드 재전송</button>
+        </form>
+    </div>
+</div>
+{% endblock %}

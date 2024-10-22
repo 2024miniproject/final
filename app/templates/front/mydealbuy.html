@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>상품 거래 상태 변경</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='mydeal.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='bar.css') }}">
+    <style>
+        .hidden {
+            display: none;
+        }
+        .disabled-btn {
+            background-color: gray;
+            cursor: not-allowed;
+        }
+    </style>
+    <script>
+        function updateStatus(purchaseId, currentStatus) {
+            let newStatus;
+            let nextButtonText;
+
+            // 상태에 따라 다음 상태와 버튼 텍스트 설정
+            switch (currentStatus) {
+                case 'PENDING':
+                    newStatus = 'PAYMENT_COMPLETED';
+                    nextButtonText = '사물함 크기 선택 완료';
+                    break;
+                case 'PAYMENT_COMPLETED':
+                    newStatus = 'SIZE_SELECTED';
+                    nextButtonText = '사물함 배치 완료';
+                    break;
+                case 'SIZE_SELECTED':
+                    newStatus = 'LOCKER_ASSIGNED';
+                    nextButtonText = '수령 완료';
+                    break;
+                case 'LOCKER_ASSIGNED':
+                    newStatus = 'TRANSACTION_COMPLETED';
+                    nextButtonText = '입금 완료';
+                    break;
+                default:
+                    return;
+            }
+
+            // 상태 업데이트 요청
+            fetch(`/purchasewant/update_purchase_status/${purchaseId}`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({status: newStatus})
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    // 버튼 업데이트
+                    const actionButton = document.getElementById(`actionButton-${purchaseId}`);
+                    actionButton.textContent = nextButtonText;
+                    actionButton.setAttribute("onclick", `updateStatus('${purchaseId}', '${newStatus}')`);
+                    if (newStatus === 'TRANSACTION_COMPLETED') {
+                        actionButton.classList.add('disabled-btn');
+                        actionButton.disabled = true;
+                    }
+                } else {
+                    alert(data.message);
+                }
+            });
+        }
+
+        function toggleProgressBar(purchaseId) {
+            const progressBar = document.getElementById(`progressBar-${purchaseId}`);
+            progressBar.classList.toggle('hidden');
+        }
+
+        function cancelPurchase(purchaseId) {
+            if (confirm("정말로 구매 신청을 취소하시겠습니까?")) {
+                fetch(`/purchasewant/cancel_purchase/${purchaseId}`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        alert(data.message);
+                        location.reload();
+                    } else {
+                        alert(data.message);
+                    }
+                })
+                .catch(error => console.error('Error:', error));
+            }
+        }
+
+        function updateButton(buttonId) {
+            const button = document.getElementById(buttonId);
+            console.log("updateButton called for button:", buttonId);  // 디버그용 콘솔 로그
+
+            // 첫 번째 변화: 버튼 색상과 텍스트 변경
+            button.style.backgroundColor = 'gray';  // 첫 번째 색상
+            button.textContent = '판매자 대기';  // 첫 번째 텍스트
+            button.style.border = 'gray';
+
+        }
+    </script>
+</head>
+
+<body>
+    <!-- 사이드바 -->
+    <div class="sidebar">
+        <div class="logo">
+            <img src="{{ url_for('static', filename='logo.png') }}" alt="Logo">
+            <button class="plus-button" onclick="location.href='{{ url_for('write_views.write') }}'">+</button>
+        </div>
+        <ul class="menu">
+            <li><a href="#"><span class="icon" onclick="location.href='/home'"><img src="../../static/logologo.png" style="width:52px"></span> Home</a></li>
+            <li><a href="#"><span class="icon" onclick="location.href='/mydeal_views/mydealbuy'"><img src="../../static/logologo.png" style="width:52px"></span> My deal</a></li>
+            <li><a href="#"><span class="icon" onclick="location.href='/information'"><img src="../../static/logologo.png" style="width:52px"></span> Info</a></li>
+            <form action="{{ url_for('auth.logout') }}" method="post" style="display:inline;">
+                <button type="submit" class="logout">LOGOUT</button>
+            </form>
+        </ul>
+    </div>
+        <div class="detailback">
+
+    <!-- 메인 콘텐츠 -->
+    <div class="content">
+        <!-- 사용자 정보 -->
+        <div class="user-info">
+            <div style="display: flex; gap:15px; align-items: flex-end;">
+                <img src="../../static/profilepic.png" alt="User Icon" class="user-icon">
+                <p class="user-name">{{session['user_name']}}님</p>
+            </div>
+            <div class="purchase-sale">
+                <button style="font-weight: bold; color: #B3261E;" class="purchase-btn" onclick="location.href='/mydeal_views/mydealbuy'">구매</button>
+                <button class="sale-btn" onclick="location.href='/mydeal_views/mydealsell'">판매</button>
+            </div>
+        </div>
+
+        <div class="purchase-list">
+            {% if purchases %}
+            {% for purchase in purchases %}
+            <div style="padding-bottom:10px;" class="product-section">
+                <div class="aboutabout">
+                    <h4 style="margin-bottom:3px;"><a href="{{ url_for('detail.detail', post_id=purchase.id) }}">{{ purchase.item_name }}</a></h4>
+                    <p style="margin-top:4px;">{{ purchase.description }}</p>
+                </div>
+                <div style="display: flex; gap: 10px;">
+                    <!-- 상태에 따른 버튼 텍스트 설정 -->
+                    <button id="actionButton-{{ purchase.id }}"
+                            class="status-btn"
+                            onclick="updateButton('actionButton-{{ purchase.id }}')">  <!-- ID를 인자로 전달 -->
+                        입금 완료
+                    </button>
+
+                    <button class="status-btn2" onclick="toggleProgressBar('{{ purchase.id }}')">현황 조회</button>
+                    <button class="status-btn3" onclick="cancelPurchase('{{ purchase.id }}')">구매 취소</button>
+                </div>
+            </div>
+            <!-- 상태 진행 바를 별도의 div로 추가 -->
+
+            <div class="progress-bar hidden" id="progressBar-{{ purchase.id }}">
+                <div class="step" {% if purchase.status in ['PAYMENT_COMPLETED', 'SIZE_SELECTED', 'LOCKER_ASSIGNED', 'TRANSACTION_COMPLETED'] %} style="color: black;" {% endif %}>
+                    <p>거래 대기 중</p>
+                </div>
+                <div class="step" {% if purchase.status in ['SIZE_SELECTED', 'LOCKER_ASSIGNED', 'TRANSACTION_COMPLETED'] %} style="color: black;" {% endif %}>
+                    <p>입금 완료</p>
+                </div>
+                <div class="step" {% if purchase.status in ['LOCKER_ASSIGNED', 'TRANSACTION_COMPLETED'] %} style="color: black;" {% endif %}>
+                    <p>사물함 크기 선택 완료</p>
+                </div>
+                <div class="step" {% if purchase.status == 'TRANSACTION_COMPLETED' %} style="color: black;" {% endif %}>
+                    <p>사물함 배치 완료</p>
+                </div>
+                <div class="step" {% if purchase.status == 'TRANSACTION_COMPLETED' %} style="color: black;" {% endif %}>
+                    <p>수령 완료</p>
+                </div>
+            </div>
+    </div>
+            {% endfor %}
+            {% else %}
+            <div class="no-purchases">
+                    <p>구매 목록이 없습니다.</p>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+
+
+    <script src="{{ url_for('static', filename='mydeal.js') }}"></script>
+</body>
+</html>

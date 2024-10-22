@@ -1,0 +1,176 @@
+.topappbar{
+
+    /* Auto layout */
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 0px 0px 24px;
+    gap: 4px;
+
+    position: absolute;
+    width: 1349px;
+    height: 82px;
+    left: 29px;
+    top: 16px;
+
+}
+
+.headline{
+
+    /* headline */
+
+    /* Auto layout */
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    padding: 0px 24px;
+    gap: 10px;
+
+    width: 1349px;
+    height: 58px;
+
+
+    /* Inside auto layout */
+    flex: none;
+    order: 1;
+    align-self: stretch;
+    flex-grow: 0;
+
+}
+
+.titleinfo{
+
+    /* headline */
+
+    height: 58px;
+
+    /* Title Page */
+    font-family: 'Inter';
+    font-style: normal;
+    font-weight: 700;
+    font-size: 48px;
+    line-height: 120%;
+    /* identical to box height, or 58px */
+    letter-spacing: -0.02em;
+
+    color: #1D1B20;
+
+
+    /* Inside auto layout */
+    flex: none;
+    order: 0;
+    flex-grow: 0;
+
+}
+
+.moremore{
+
+    /* 사물함 위치 */
+
+    position: absolute;
+    width: 249px;
+    height: 44px;
+    left: 53px;
+    top: 125px;
+
+    /* Heading */
+    font-family: 'Inter';
+    font-style: normal;
+    font-weight: 600;
+    font-size: 24px;
+    line-height: 120%;
+    /* or 29px */
+    letter-spacing: -0.02em;
+
+    color: #000000;
+
+}
+
+.content{
+
+    /* Content */
+
+    width: 1349px;
+    height: 996px;
+
+    background: #FFFFFF;
+    border-radius: 28px;
+
+    /* Inside auto layout */
+    flex: none;
+    order: 2;
+    flex-grow: 0;
+
+}
+
+.submore{
+
+    /*이용 안내*/
+
+    position: absolute;
+    width: 249px;
+    height: 44px;
+    left: 675px;
+    top: 125px;
+
+    /* Heading */
+    font-family: 'Inter';
+    font-style: normal;
+    font-weight: 600;
+    font-size: 24px;
+    line-height: 120%;
+    /* or 29px */
+    letter-spacing: -0.02em;
+
+    color: #000000;
+
+}
+
+.map{
+
+    /* 스크린샷 2024-09-19 오후 10.30.00 1 */
+
+    position: absolute;
+    width: 350px;
+    height: auto;
+    padding-left: 60;
+    padding-right: 60;
+    padding-top: 0px;
+    left: 133px;
+    top: 183px;
+
+}
+
+.backsq{
+
+    position: absolute;
+    width: 575px;
+    height: 340px;
+    left: 675px;
+    top: 200px;
+
+    background: #EBEDEF;
+    box-shadow: 7px 15px 4px rgba(0, 0, 0, 0.25);
+    border-radius: 16px;
+
+}
+
+.text{
+
+    position: absolute;
+    width: 501px;
+    height: 276px;
+    left: 712px;
+    top: 236px;
+
+    /* M3/body/large */
+    font-family: 'Roboto';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 24px;
+    /* or 150% */
+    letter-spacing: 0.5px;
+
+    color: #000000;
+}

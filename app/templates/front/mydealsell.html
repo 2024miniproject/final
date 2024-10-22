@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>상품 거래 상태 변경</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='mydeal.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='bar.css') }}">
+    <style>
+        /* 각 판매 항목을 세로로 배치 */
+        .product-section {
+            margin-bottom: 20px;
+            border-bottom: 1px solid #ccc;
+            padding-bottom: 10px;
+        }
+        .disabled-btn {
+            background-color: gray;
+            cursor: not-allowed;
+        }
+        /* 진행 바 숨기기 */
+        .hidden {
+            display: none;
+        }
+    </style>
+    <script>
+        function updateStatus(saleId, currentStatus) {
+            let newStatus;
+            let nextButtonText;
+
+            let disableButton = false; // 버튼 비활성화 여부를 저장하는 변수
+
+            // 상태에 따라 다음 상태와 버튼 텍스트, 버튼 활성화 여부 설정
+            switch (currentStatus) {
+                case 'PENDING':
+                    newStatus = 'PAYMENT_COMPLETED';
+                    nextButtonText = '사물함 크기 선택 완료';
+                    disableButton = true; // 구매자가 다음 상태를 완료할 때까지 버튼 비활성화
+                    break;
+                case 'PAYMENT_COMPLETED':
+                    newStatus = 'SIZE_SELECTED';
+                    nextButtonText = '사물함 배치 완료';
+                    disableButton = true; // 구매자가 사물함 배치 완료할 때까지 비활성화
+                    break;
+                case 'SIZE_SELECTED':
+                    newStatus = 'LOCKER_ASSIGNED';
+                    nextButtonText = '수령 완료';
+                    disableButton = true; // 구매자가 수령 완료할 때까지 비활성화
+                    break;
+                case 'LOCKER_ASSIGNED':
+                    newStatus = 'TRANSACTION_COMPLETED';
+                    nextButtonText = '거래 완료';
+                    break;
+                default:
+                    return;
+            }
+
+            // 상태 업데이트 요청
+            fetch(`/purchasewant/update_purchase_status/${saleId}`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({status: newStatus})
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    // 버튼 업데이트
+                    const actionButton = document.getElementById(`statusButton-${saleId}`);
+                    actionButton.textContent = nextButtonText;
+                    actionButton.setAttribute("onclick", `updateStatus('${saleId}', '${newStatus}')`);
+                    if (newStatus === 'TRANSACTION_COMPLETED') {
+                        actionButton.classList.add('disabled-btn');
+                        actionButton.disabled = true;
+                    }
+                } else {
+                    alert(data.message);
+                }
+            });
+        }
+
+        function toggleProgressBar(saleId) {
+            const progressBar = document.getElementById(`progressBar-${saleId}`);
+            progressBar.classList.toggle('hidden');
+        }
+
+        function updateButton(buttonId) {
+            const button = document.getElementById(buttonId);
+            console.log("updateButton called for button:", buttonId);  // 디버그용 콘솔 로그
+
+            // 첫 번째 변화: 버튼 색상과 텍스트 변경
+            button.style.backgroundColor = 'gray';// 첫 번째 색상
+            button.style.border = 'gray';
+            button.textContent = '선택 중';  // 첫 번째 텍스트
+            // 첫 번째 알림 메시지 표시
+            showNotification('사물함 사이즈를 선택하세요', '../../static/putbox.png');
+
+            // 5초 후에 첫 번째 알림 숨기기
+            setTimeout(() => {
+                hideNotification();
+
+                // 첫 번째 알림이 사라진 후 두 번째 알림을 1초 뒤에 표시
+                setTimeout(() => {
+                    showNotification2('10번 사물함으로 배정되었습니다!\n3일 이내로 배치 완료해 주세요.');
+                }, 1000);  // 첫 번째 알림이 사라진 후 1초 대기 후 두 번째 알림 표시
+
+                // 두 번째 알림 표시 후 3초 후에 숨기기
+                setTimeout(() => {
+                    hideNotification2();
+                }, 4000);  // 두 번째 알림 표시 후 3초 뒤에 숨기기 (1초 + 3초)
+
+            }, 5000);  // 첫 번째 알림이 5초 후에 사라짐
+
+            // 3초 후에 두 번째 변화: 색상과 텍스트 변경
+            setTimeout(() => {
+                button.style.backgroundColor = 'gray';  // 두 번째 색상
+                button.style.border = 'gray';
+                button.textContent = '배정 완료';  // 두 번째 텍스트
+            }, 5000);  // 3초 후에 실행
+        }
+
+        function showNotification(message, imageUrl) {
+            const notification = document.getElementById('notification');
+            const notificationMessage = document.getElementById('notificationMessage');
+            const notificationImage = notification.querySelector('img');
+
+            notificationMessage.textContent = message;
+            notificationImage.src = imageUrl; // 이미지 경로 설정
+            notification.style.display = 'block'; // 알림 표시
+        }
+
+        function hideNotification() {
+            const notification = document.getElementById('notification');
+            notification.style.display = 'none'; // 알림 숨김
+        }
+
+        function showNotification2(message) {
+            const notification2 = document.getElementById('notification2');
+            const notificationMessage2 = document.getElementById('notificationMessage2');
+            notificationMessage2.textContent = message;
+            notification2.style.display = 'block'; // 알림 표시
+        }
+
+        function hideNotification2() {
+            const notification2 = document.getElementById('notification2');
+            notification2.style.display = 'none'; // 알림 숨김
+        }
+
+    </script>
+</head>
+
+<body>
+    <!-- 사이드바 -->
+    <div class="sidebar">
+        <div class="logo">
+            <img src="{{ url_for('static', filename='logo.png') }}" alt="Logo">
+            <button class="plus-button" onclick="location.href='{{ url_for('write_views.write') }}'">+</button>
+        </div>
+        <ul class="menu">
+            <li><a href="#"><span class="icon" onclick="location.href='/home'"><img src="../../static/logologo.png" style="width:52px"></span> Home</a></li>
+            <li><a href="#"><span class="icon" onclick="location.href='/mydeal_views/mydealbuy'"><img src="../../static/logologo.png" style="width:52px"></span> My deal</a></li>
+            <li><a href="#"><span class="icon" onclick="location.href='/information'"><img src="../../static/logologo.png" style="width:52px"></span> Info</a></li>
+            <form action="{{ url_for('auth.logout') }}" method="post" style="display:inline;">
+                <button type="submit" class="logout">LOGOUT</button>
+            </form>
+        </ul>
+    </div>
+
+            <div class="detailback">
+
+
+    <!-- 메인 콘텐츠 -->
+    <div class="content">
+        <!-- 사용자 정보 -->
+        <div class="user-info">
+            <div style="display: flex; gap:15px; align-items: flex-end;">
+                <img src="../../static/profilepic.png" alt="User Icon" class="user-icon">
+                <p class="user-name">{{session['user_name']}}님</p>
+            </div>
+            <div class="purchase-sale">
+                <button class="purchase-btn" onclick="location.href='/mydeal_views/mydealbuy'">구매</button>
+                <button style="font-weight: bold; color: #B3261E;" class="sale-btn" onclick="location.href='/mydeal_views/mydealsell'">판매</button>
+            </div>
+        </div>
+
+        <!-- 판매 목록 -->
+        <div class="purchase-list">
+            {% for sale in sales %}
+            <div style="margin-bottom:0px;" class="product-section">
+                <div class="aboutabout">
+                    <h4 style="margin-bottom:3px;"><a href="{{ url_for('detail.detail', post_id=sale.id) }}">{{ sale.item_name }}</a></h4>
+                    <p style="margin-top:4px; width: 900px;" id="truncate-text">{{ sale.description }}</p>
+                </div>
+                <div style="display: flex; gap: 10px;">
+                   <button id="statusButton-{{ sale.id }}"
+                            class="status-btn"
+                            onclick="updateButton('statusButton-{{ sale.id }}')">  <!-- ID를 인자로 전달 -->
+                        사물함 선택
+                    </button>
+                    <button class="status-btn2" onclick="toggleProgressBar('{{ sale.id }}')">현황 조회</button>
+                </div>
+            </div>
+
+            <!-- 상태 진행 바를 별도의 div로 이동 -->
+            <div class="progress-bar hidden" id="progressBar-{{ sale.id }}">
+                <div class="step" {% if sale.status in ['PAYMENT_COMPLETED', 'SIZE_SELECTED', 'LOCKER_ASSIGNED', 'TRANSACTION_COMPLETED'] %} style="color: black;" {% endif %}>
+                <img src="../../static/loading.png" style="width:70px;">
+                <p>거래 대기 중</p>
+                </div>
+                <div class="step" {% if sale.status in ['SIZE_SELECTED', 'LOCKER_ASSIGNED', 'TRANSACTION_COMPLETED'] %} style="color: black;" {% endif %}>
+                    <img src="../../static/money.png" style="width:70px;">
+                    <p>입금 완료</p>
+                </div>
+                <div class="step" {% if sale.status in ['LOCKER_ASSIGNED', 'TRANSACTION_COMPLETED'] %} style="color: black;" {% endif %}>
+                    <img src="../../static/box.png" style="width:70px;">
+                    <p>사물함 크기 선택 완료</p>
+                </div>
+                <div class="step" {% if sale.status == 'TRANSACTION_COMPLETED' %} style="color: black;" {% endif %}>
+                    <img src="../../static/puttt.png" style="width:70px;">
+                    <p>사물함 배치 완료</p>
+                </div>
+                <div class="step" {% if sale.status == 'TRANSACTION_COMPLETED' %} style="color: black;" {% endif %}>
+                    <img src="../../static/check.png" style="width:70px;">
+                    <p>수령 완료</p>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+
+    <div id="notification" class="notification">
+        <img src="your_image.png" alt="Notification Image">
+        <p id="notificationMessage">알림 메시지 내용이 여기에 들어갑니다.</p>
+        <div class="button-group">
+            <button>소 380*520*270</button>
+            <button>중 380*520*570</button>
+            <button>대 380*520*870</button>
+        </div>
+    </div>
+
+    <div id="notification2" class="notification">
+        <p id="notificationMessage2"></p>
+    </div>
+    </div>
+
+    <script src="{{ url_for('static', filename='mydeal.js') }}"></script>
+</body>
+</html>

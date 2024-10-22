@@ -1,0 +1,493 @@
+/* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}*/
+
+.circle1{
+  /* Ellipse 7 */
+  z-index: -3;
+  position: absolute;
+  top: 68%; /*퍼센트로 바꿔야됨*/
+  left: -130px;
+  width: 289px;
+  height: 305px;
+  mix-blend-mode: lighten;
+  background: #F65757;
+  border-radius: 50%;
+  overflow: hidden;
+}
+
+body {
+  /*display: flex;*/
+  height:auto;
+  font-family: 'Roboto';
+  background-color: #0F124D;
+}
+body::-webkit-scrollbar {
+  display: none;
+}
+
+.detailback{
+  /* Content */
+  position: absolute;
+  width: 1350px;
+  height: 900px;
+  top: 0px;
+  left: 80px;
+  background: white;
+  border-top-left-radius: 28px;
+  border-top-right-radius: 28px;
+  box-sizing: border-box;
+  overflow: hidden;
+}
+
+.imagebox{
+  /* image 1 */
+
+  position: absolute;
+  width: 563px;
+  height: 760px;
+  top: 74px;
+  left: 70px;
+
+}
+
+.sim {
+
+  border-radius: 25px;
+  width: 100%;
+  height: 100%;
+  max-height:730px;
+  overflow: hidden;
+  object-fit: cover; /* 이미지가 슬라이더 크기에 맞도록 조정하며, 비율을 유지하면서 자를 수 있음 */
+
+}
+
+.sellerbox{
+
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  padding: 16px;
+  gap: 16px;
+
+  width: 448px;
+  height: 80px;
+
+  /* Inside auto layout */
+  flex: none;
+  order: 0;
+  flex-grow: 1;
+
+}
+
+.seller {
+  box-sizing: border-box;
+  /* Auto layout */
+  display: flex;
+  padding: 2%;
+  position: absolute;
+  width: 533px;
+  height: 77px;
+  left: 774px;
+  top: 70px;
+  background: #FFFFFF;
+  border-radius: 12px;
+  box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.25);
+}
+
+.profilepic {
+  width: 50px; /* 프로필 이미지 크기 */
+  height: 50px;
+  border-radius: 50%; /* 원형으로 처리 */
+}
+
+.sellertextbox {
+  display: flex;
+  justify-content: space-between; /* 위아래 간격을 일정하게 유지 */
+  height: 50px; /* 프로필 이미지 높이와 일치시킴 */
+  margin-left: 38px;
+  margin-top: -5px;
+}
+
+.name {
+  font-size: 16px;
+  font-weight: bold;
+  margin: 0;
+}
+
+.recent {
+  font-size: 12px;
+  color: #888;
+  margin: 0;
+}
+
+.profilepic{
+
+  /* Initial */
+
+  position: absolute;
+  width: 40px;
+  height: 40px;
+  left: 15px;
+  top: calc(50% - 40px/2);
+  border-radius: 100%;
+
+  /* M3/title/medium */
+  font-family: 'Roboto';
+  font-style: normal;
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 24px;
+  /* or 150% */
+  display: flex;
+  align-items: center;
+  text-align: center;
+  letter-spacing: 0.15px;
+
+  color: #FEF7FF;
+
+}
+
+.sellm{
+  /* Media */
+  position: absolute;
+  right: 0px;
+  top: 0%;
+  bottom: 0%;
+  width: 77px;
+  height: 77px;
+  overflow: hidden;
+  border-top-right-radius:12px;
+  border-bottom-right-radius:12px;
+  background: url(X.jpeg);
+
+}
+
+.sellingpost {
+  padding: 10px;
+  width: 450px;
+  height: 200px;
+  margin: 5px;
+  margin-top:5px;
+  max-height: 200px; /* 최대 높이를 설정 */
+  overflow-y: auto; /* 세로 방향 스크롤을 추가 */
+
+  /* 내용이 넘칠 경우 숨기기 */
+  -ms-overflow-style: none; /* IE 및 Edge에서 스크롤바를 숨깁니다. */
+  scrollbar-width: none; /* Firefox에서 스크롤바를 숨깁니다. */
+  text-align: justify;
+}
+.sellingpost::-webkit-scrollbar {
+  display: none; /* 스크롤바를 숨깁니다. */
+}
+.buy {
+  display: flex;
+  flex-direction: column; /* 세로 방향으로 정렬 */
+  justify-content: center;
+  align-items: center;
+  padding: 0px;
+  gap: 8px; /* 버튼 간의 간격 */
+  position: relative;
+  width: 130px;
+  height: 53px;
+  left: 330px;
+  border: none;
+  color: #FFFFFF;
+  background: #B3261E;
+  border-radius: 100px;
+  cursor: pointer; /* 마우스 커서 변경 */
+  transition: background-color 0.3s ease; /* 배경색 전환 효과 */
+}
+
+.buy:hover {
+  background:#CAC4D0; /* 마우스를 올렸을 때 배경 색상 */
+  color: #FFFFFF; /* 마우스를 올렸을 때 텍스트 색상 */
+}
+
+.deletebuy{
+
+  justify-content: center;
+  align-items: center;
+
+  position: relative;
+  width: 130px;
+  height: 53px;
+  left: 60px;
+  bottom: 0px;
+  border: none;
+  color: #FFFFFF;
+  background: #FF4C4C;
+  border-radius: 100px;
+  cursor: pointer; /* 마우스 커서 변경 */
+  transition: background-color 0.3s ease; /* 배경색 전환 효과 */
+}
+
+.deletebuy:hover {
+  background:#CAC4D0 ; /* 마우스를 올렸을 때 배경 색상 */
+  color: #FFFFFF; /* 마우스를 올렸을 때 텍스트 색상 */
+}
+
+.boxxx{
+  /* Rectangle 24 */
+
+  position: absolute;
+  width: 480px;
+  height: 504px;
+  left: 774px;
+  top: 173px;
+  padding: 2%;
+
+  background: #FFFFFF;
+  box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.25);
+  border-radius: 28px;
+  z-index: 1;
+
+}
+
+.productname{
+
+  /* 중고책 판매합니다 */
+  margin-left: 10px;
+  margin-bottom: -10px;
+  /* M3/title/large */
+  font-family: 'Roboto';
+  font-style: bold;
+  font-weight: 600;
+  font-size: 20px;
+  line-height: 28px;
+  /* or 127% */
+  color: #000000;
+
+}
+
+.productprice{
+  /* 20000원 */
+  margin-left: 10px;
+  margin-top: 10px;
+  /* M3/body/medium */
+  font-family: 'Roboto';
+  font-style: normal;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 20px;
+  /* or 143% */
+  letter-spacing: 0.25px;
+
+  color: #000000;
+
+}
+
+.divider{
+
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+
+  position: relative;
+  width: 480px;
+  margin-top: 20px;
+  color:#CAC4D0;
+
+}
+
+.buy{
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  float: left;
+  padding: 0px;
+  gap: 8px;
+  margin-right: 0px;
+  position: relative;
+  width: 130px;
+  height: 53px;
+
+  background: #B3261E;
+  border-radius: 100px;
+
+}
+
+.comment-box {
+  /* Rectangle 23 */
+
+  position: absolute;
+  width: 431px; /*%처리 필요*/
+  height: 68px;
+  left: 35px;
+  top: 420px;
+  padding: 3%;
+  background: #EBEDEF;
+  border-radius: 12px;
+  z-index: 2;
+  padding-left: 3%;
+
+
+  max-height: 158px; /* 최대 높이를 설정 */
+  overflow-y: auto; /* 세로 방향 스크롤을 추가 */
+
+}
+
+/* 스크롤바 숨기기 (WebKit 기반 브라우저: Chrome, Safari 등) */
+.comment-box::-webkit-scrollbar {
+  display: none; /* 스크롤바를 숨깁니다. */
+}
+
+/* Firefox 스크롤바 숨기기 */
+.comment-box {
+  scrollbar-width: none; /* Firefox에서 스크롤바를 숨깁니다. */
+}
+
+/* IE 및 Edge (Legacy)에서 스크롤바 숨기기 */
+.comment-box {
+
+  -ms-overflow-style: none; /* IE 및 Edge에서 스크롤바를 숨깁니다. */
+
+}
+
+.commentcomment{
+  display: flex;
+  flex-direction: row; /* 가로(행) 방향으로 배치 */
+  align-items: flex-start;
+  gap: 15px; /* 이미지와 텍스트 사이의 간격 */
+  margin-bottom: 5px;
+  border-bottom: solid #bbbbbb;
+  padding-top: 1%;
+  padding-bottom:2%;
+
+}
+
+.commentpic{
+  position: relative;
+  width: 63px;
+  height: 63px;
+  overflow: hidden;
+  border-radius: 100%;
+  background: ../../static/profilepic.png;
+  display: flex;
+
+}
+
+.text-wrapper {
+  display: flex;
+  width: 326px;
+  flex-direction: column; /* 세로로 쌓이게 */
+}
+
+.comment-name {
+  /* 텍스트 스타일 */
+  font-family: 'Roboto';
+  font-style: bold;
+  font-weight: 400;
+  margin: 0px;
+  font-size: 16px;
+  line-height: 24px;
+  letter-spacing: 0.15px;
+  color: #1D1B20;
+}
+
+.comment-text {
+  /* 텍스트 스타일 */
+  font-family: 'Roboto';
+  font-style: normal;
+  font-weight: 320;
+  font-size: 14px;
+  line-height: 20px;
+  letter-spacing: 0.25px;
+  position: relative;
+  margin-top: 0px;
+  color: #1D1B20;
+}
+
+.comment-box textarea {
+  width: 100%;
+  height: 40px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+}
+
+.date{
+
+  font-family: 'Roboto';
+  font-weight: 300;
+  font-size: 10px;
+  margin-top: -8px;
+  margin-bottom: 10px;
+}
+.commentwrite{
+  /* Rectangle 2 */
+  font-family: 'Roboto';
+  position: absolute;
+  width: 405px;
+  height: 50px;
+  left: 774px;
+  top: 760px;
+
+  background: #FFFFFF;
+  box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.25);
+  border-radius: 12px;
+  resize: none;
+
+  border: none;
+  outline: none;
+  background-color: transparent;
+  padding:1%;
+}
+
+.writebutton{
+
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;url(http://127.0.0.1:5000/static/uploads/f39e7ad4d53d47b59ba3d1b71bf9dea6_KakaoTalk_20241016_183147679.jpg)
+  padding: 0px;
+
+  position: relative;
+  width: 75px;
+  height: 75px;
+  left: 1215px;
+  top: 750px;
+
+  background: #F65757;
+  /* M3/Elevation Light/3 */
+  box-shadow: 0px 4px 8px 3px rgba(0, 0, 0, 0.15), 0px 1px 3px rgba(0, 0, 0, 0.3);
+  border-radius: 16px;
+  border:none;
+  cursor: pointer; /* 마우스 커서 변경 */
+  transition: background-color 0.3s ease; /* 배경색 전환 효과 */
+}
+
+.writebutton:hover {
+  background-color: #0F124D;
+  color: #FFFFFF; /* 마우스를 올렸을 때 텍스트 색상 */
+}
+
+/* 구매 신청 완료 시 버튼 색을 회색으로 바꾸는 스타일 */
+.buy.clicked {
+  background-color: gray;
+  color: white;
+  cursor: not-allowed;
+}
+
+.image-indicators {
+  display: flex; /* 원들을 가로로 정렬 */
+  justify-content: center; /* 가운데 정렬 */
+  margin-top: 10px; /* 이미지와 원 사이의 간격 */
+  position: relative; /* 위치 설정을 위한 relative */
+}
+
+.indicator {
+  width: 7px; /* 원의 크기 */
+  height: 7px; /* 원의 크기 */
+  border-radius: 50%; /* 둥글게 만들기 */
+  background-color: #D9D9D9; /* 기본 색상 */
+  margin: 5px; /* 원 간의 간격 */
+  cursor: pointer; /* 마우스 커서 변경 */
+}
+
+.indicator.active {
+  background-color: #F65757; /* 활성화된 원의 색상 */
+}

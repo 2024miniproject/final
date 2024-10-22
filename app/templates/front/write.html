@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>판매글 작성</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='write.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='bar.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='writebody.css') }}">
+</head>
+
+<body>
+    <div class="writepage"></div>
+    <!-- 사이드바 -->
+    <div class="sidebar">
+        <div class="logo">
+            <img src="{{ url_for('static', filename='logo.png') }}" alt="Logo">
+            <button class="plus-button" id="addPostButton">+</button>
+        </div>
+        <ul class="menu">
+            <li><a href="#"><span class="icon" onclick="location.href='/home'"><img src="../../static/logologo.png" style="width:52px"></span> Home</a></li>
+            <li><a href="#"><span class="icon" onclick="location.href='/mydeal_views/mydealbuy'"><img src="../../static/logologo.png" style="width:52px"></span> My deal</a></li>
+            <li><a href="#"><span class="icon" onclick="location.href='/information'"><img src="../../static/logologo.png" style="width:52px"></span> Info</a></li>
+            <button class="logout" id="logoutButton">LOGOUT</button>
+        </ul>
+    </div>
+
+    <div class="backbox"></div>
+    <div class="writebox">
+        <!-- 꾸밈 요소 -->
+        <div class="circle1"></div>
+        <div class="circle2"></div>
+        <div class="circle3"></div>
+
+        <!-- Form 영역 -->
+        <form id="write-form" action="{{ url_for('write_views.write') }}" method="post" enctype="multipart/form-data">
+            <div class="title">제목</div>
+            <textarea class="titlearea" id="title" name="title" placeholder="제목을 입력하세요!" required></textarea>
+            <hr class="line1">
+
+            <div class="price">가격</div>
+            <textarea class="pricearea" id="price" name="price" placeholder="이번 제품은 얼마인가요?" required></textarea>
+            <hr class="line2">
+
+            <!-- 사진 업로드 부분 -->
+            <label class="upload-box" for="file-upload">
+                <span class="upload-icon">+</span>
+            </label>
+
+            <!-- 이미지 미리보기 영역 -->
+            <div id="image-container"></div>
+            <div id="rectangle-container"></div>
+
+            <!-- 사용자가 내용을 입력하는 부분 -->
+            <textarea class="textarea" id="content" name="content" placeholder="내용을 입력하세요." rows="1" oninput="this.style.height = ''; this.style.height = this.scrollHeight + 'px';" required></textarea>
+
+            <!-- 발행하기 버튼 -->
+            <button class="publish-button" type="button" onclick="publishContent()">발행하기</button>
+            <input type="hidden" id="uploaded-files" name="image_filename"> <!-- 파일 경로 저장용 -->
+            <input id="file-upload" type="file" name="files" accept="image/*" onchange="handleFile(event)" style="display: none;" multiple>
+        </form>
+    </div>
+
+    <script>
+        function handleFile(event) {
+            uploadFiles(event);
+            const output = document.getElementById('image-container');
+
+            Array.from(event.target.files).forEach(file => {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    const img = document.createElement('img');
+                    img.src = e.target.result;
+                    img.classList.add('image-preview'); // .image-preview 클래스 추가
+                    img.style.maxWidth = '100%';
+                    img.style.height = 'auto';
+                    img.style.margin = '5px';
+                    output.appendChild(img); // 미리보기 이미지 추가
+                }
+                reader.readAsDataURL(file);  // 각 파일을 Data URL로 읽어오기
+            });
+        }
+
+async function uploadFiles(event) {
+    const files = event.target.files;
+    const formData = new FormData();
+
+    for (let i = 0; i < files.length; i++) {
+        formData.append('files', files[i]);
+    }
+
+    try {
+        const response = await fetch('/write/upload', {
+            method: 'POST',
+            body: formData
+        });
+
+        const result = await response.json();
+        if (result.success) {
+            const uploadedFilesInput = document.getElementById('uploaded-files');
+            let currentFiles = new Set(uploadedFilesInput.value ? uploadedFilesInput.value.split(',') : []);
+            // 새로운 파일명을 Set에 추가해 중복 방지
+            result.filenames.forEach(filename => currentFiles.add(filename));
+            uploadedFilesInput.value = Array.from(currentFiles).join(',');
+        } else {
+            alert("파일 업로드 실패: " + result.message);
+        }
+    } catch (error) {
+        alert("파일 업로드 중 오류 발생: " + error.message);
+    }
+}
+
+
+
+write.html
+
+    async function publishContent() {
+        const form = document.querySelector('#write-form');
+        const formData = new FormData(form);
+
+        try {
+            const response = await fetch(form.action, {
+                method: 'POST',
+                body: formData
+            });
+
+            const result = await response.json();
+
+            if (result.success) {
+                alert("글 작성이 완료되었습니다! 홈으로 이동됩니다.");
+                window.location.href = "/home";
+            } else {
+                alert("오류가 발생했습니다: " + result.message);
+            }
+        } catch (error) {
+            alert("요청 중 오류가 발생했습니다: " + error.message);
+        }
+    }
+
+    </script>
+</body>
+</html>

@@ -1,0 +1,25 @@
+
+body {
+    display: flex;
+    font-family: Arial, sans-serif;
+    background-color: #0F124D;
+    overflow: hidden;
+}
+
+
+.writepage{
+
+    position: absolute;
+    width: 1350px;
+    height: 1000px;
+    top: 0px;
+    left: 80px;
+    /*
+    margin-left: 1430px;
+    margin-top: -20px; */
+
+    background: white;
+    border-top-left-radius: 28px;
+    border-top-right-radius: 28px;
+
+}

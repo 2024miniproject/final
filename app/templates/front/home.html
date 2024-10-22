@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>홈</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='home.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='homebody.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='bar.css') }}">
+    <script src="https://unpkg.com/masonry-layout@4/dist/masonry.pkgd.min.js"></script>
+</head>
+
+<body>
+    <!-- 사이드바 -->
+    <div class="sidebar">
+        <div class="logo">
+            <img src="{{ url_for('static', filename='logo.png') }}" alt="Logo">
+            <button class="plus-button" id="addPostButton">+</button>
+        </div>
+        <ul class="menu">
+            <li><a href="#"><span class="icon" onclick="location.href='/home'"><img src="../../static/logologo.png" style="width:52px"></span> Home</a></li>
+            <li><a href="#"><span class="icon" onclick="location.href='/mydeal_views/mydealbuy'"><img src="../../static/logologo.png" style="width:52px"></span> My deal</a></li>
+            <li><a href="#"><span class="icon" onclick="location.href='/information'"><img src="../../static/logologo.png" style="width:52px"></span> Info</a></li>
+            <form action="{{ url_for('auth.logout') }}" method="post" style="display:inline;">
+                <button type="submit" class="logout">LOGOUT</button>
+            </form>
+        </ul>
+    </div>
+    
+    <!-- 본문 -->
+    <div class="mainpage">
+        <h6 class="username">안녕하세요, {{session['user_name']}}님</h6>
+        <h1 class="maintext">덕성여대 무인 사물함<br>프로 GPT에 오신 것을 환영합니다!</h1>
+
+        <!-- 검색 바 추가 -->
+        <div class="search-bar">
+            <input type="text" id="searchInput" placeholder="찾으시는 물건이 있나요?">
+            <button id="searchButton">검색</button>
+        </div>
+
+        <div class="postbox">
+            <div class="posts" id="postsContainer">
+                {% for post in posts %}
+                    <div class="post" onclick="location.href='{{ url_for('detail.detail', post_id=post.id) }}'">
+                        {% if post.image_filename %}
+                            <img src="{{ url_for('static', filename= 'uploads/' + post.image_filename.split(',')[0].strip()) }}" alt="Uploaded Image" class="post-image">
+                        {% endif %}
+                        <h3 class="post-title">{{ post.title }}</h3>
+                        <h5 class="post-price">{{ post.price|int }}원</h5>
+                    </div>
+                {% endfor %}
+            </div>
+
+            <!-- 검색 결과가 없을 때 메시지 표시 -->
+            <div id="noResults">이런! 찾으시는 물건이 아직 등록되지 않았어요.</div>
+        </div>
+    </div>
+
+    <script>
+        let isFirstClick = true;  // 처음 클릭 여부
+        document.getElementById('addPostButton').onclick = function() {
+            if (isFirstClick) {
+                isFirstClick = false;
+                window.location.href = "{{ url_for('write_views.write') }}";
+            } else {
+                const confirmation = confirm("작성을 취소하시겠습니까?");
+                if (confirmation) {
+                    window.location.href = "{{ url_for('write_views.write') }}";
+                }
+            }
+        }
+
+        // 검색 기능
+        document.getElementById('searchButton').onclick = function() {
+            performSearch();
+        };
+
+        // 엔터 키로 검색 기능 추가
+        document.getElementById('searchInput').addEventListener('keypress', function(event) {
+            if (event.key === 'Enter') {
+                performSearch();
+            }
+        });
+
+        function performSearch() {
+            const searchInput = document.getElementById('searchInput').value.toLowerCase();
+            const postsContainer = document.getElementById('postsContainer');
+            const posts = Array.from(document.querySelectorAll('.post'));
+            let hasResults = false;  // 결과가 있는지 여부
+
+            // 모든 게시물을 보여줌
+            posts.forEach(post => {
+                post.style.display = 'block';
+                postsContainer.appendChild(post);
+            });
+
+            // 검색된 게시물을 저장할 배열
+            const filteredPosts = posts.filter(post => {
+                const title = post.querySelector('.post-title').innerText.toLowerCase();
+                return title.includes(searchInput);
+            });
+
+            // 검색된 게시물이 있을 경우
+            if (filteredPosts.length > 0) {
+                hasResults = true; // 결과 있음
+                posts.forEach(post => post.style.display = 'none'); // 모든 게시물을 숨김
+                filteredPosts.forEach(post => {
+                    postsContainer.prepend(post);
+                    post.style.display = 'block'; // 검색된 게시물은 보이게 함
+                });
+            } else {
+                // 검색된 게시물이 없을 경우 모든 게시물을 숨김
+                posts.forEach(post => post.style.display = 'none');
+            }
+
+            // Masonry 레이아웃 재구성
+            var msnry = new Masonry(postsContainer, {
+                itemSelector: '.post',
+                columnWidth: '.post',
+                gutter: 10,
+                fitWidth: true
+            });
+
+            // 검색 결과가 없는 경우 메시지 표시
+            const noResultsMessage = document.getElementById('noResults');
+            if (hasResults) {
+                noResultsMessage.style.display = 'none'; // 결과가 있으면 숨김
+            } else {
+                noResultsMessage.style.display = 'block'; // 결과가 없으면 표시
+            }
+        }
+
+        window.onload = function() {
+            var elem = document.querySelector('.posts');
+            var msnry = new Masonry(elem, {
+                itemSelector: '.post',
+                columnWidth: '.post',
+                gutter: 10,
+                fitWidth: true
+            });
+        };
+    </script>
+
+<div class="redred"></div>
+</body>
+</html>

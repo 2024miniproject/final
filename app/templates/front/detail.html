@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>판매</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='detail.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='bar.css') }}">
+</head>
+
+<body>
+    <!-- 사이드바 -->
+
+    <!-- Flash 메시지 출력
+        {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            <ul class="flashes">
+                {% for category, message in messages %}
+                    <li class="{{ category }}">{{ message }}</li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+    {% endwith %} -->
+    <div class="sidebar">
+        <div class="circle1"></div>
+        <div class="logo">
+            <img src="{{ url_for('static', filename='logo.png') }}" alt="Logo">
+            <button class="plus-button" id="addPostButton">+</button>
+        </div>
+        <ul class="menu">
+            <li><a href="#"><span class="icon" onclick="location.href='/home'"><img src="../../static/logologo.png" style="width:52px"></span> Home</a></li>
+            <li><a href="#"><span class="icon" onclick="location.href='/mydeal_views/mydealbuy'"><img src="../../static/logologo.png" style="width:52px"></span> My deal</a></li>
+            <li><a href="#"><span class="icon" onclick="location.href='/information'"><img src="../../static/logologo.png" style="width:52px"></span> Info</a></li>
+            <button class="logout" id="logoutButton">LOGOUT</button>
+        </ul>
+    </div>
+    <div class="detailback">
+        <div class="imagebox">
+            <img class="sim" id="current-image" src="" alt="Uploaded Image" style="max-width: 100%; height: auto;">
+            <div class="image-indicators"></div>
+        </div>
+        </div>
+
+        <div class="seller">
+            <img class="sellm">
+            <img class="profilepic" src="../../static/profilepic.png">
+            <div class="sellertextbox">
+                <div>
+                <h4 class="name">{{ post.user.username }}</h4>
+                <h6 class="recent">최근 댓글 · 1시간 전</h6>
+                </div>
+            </div>
+        </div>
+
+            <!--
+            <div class="sellname">
+                <h3>익명의 뽀삐</h3>
+                {% if comments %}
+                    {% set sorted_comments = comments | sort(attribute='created_at', reverse=true) %}
+                    {% set latest_comment = sorted_comments[0] %}
+                    {% set time_diff = current_time - latest_comment.created_at %}
+                    {% if time_diff.days > 0 %}
+                        <p>최근 댓글 - {{ time_diff.days }}일 전</p>
+                    {% elif time_diff.seconds >= 3600 %}
+                        <p>최근 댓글 - {{ time_diff.seconds // 3600 }}시간 전</p>
+                    {% elif time_diff.seconds >= 60 %}
+                        <p>최근 댓글 - {{ time_diff.seconds // 60 }}분 전</p>
+                    {% else %}
+                        <p>최근 댓글 - 방금 전</p>
+                    {% endif %}
+                {% endif %}
+            </div>
+            -->
+
+            <div class="boxxx">
+                <div class="productname">{{ post.title }}</div> <!-- 게시글 제목 -->
+                <p class="productprice"> · {{ post.price|int }}원</p> <!-- 게시글 가격 -->
+                <div class="divider"><hr></div>
+                <!--<div class="divide"></div>-->
+                <div class="sellingpost">
+                    <p style="white-space: pre-wrap;">{{ post.content }}</p><!-- 게시글 내용 -->
+            </div>
+
+
+
+
+                    <!-- 구매 신청하기 버튼 -->
+    {% if post.user_id != session.get('user_id') %}  <!-- 작성자가 아닌 경우 -->
+        {% if existing_purchase %}  <!-- 이미 구매 신청이 존재하는 경우 -->
+            <button class="buy" onclick="window.location.href='/mydeal_views/mydealbuy'">구매 현황 보기</button>
+        {% elif buyer_exists %}  <!-- 다른 구매자가 있는 경우 -->
+            <button class="buy clicked" disabled>거래 진행중</button>
+        {% else %}  <!-- 구매 신청 가능 -->
+            <button class="buy" onclick="submitPurchase()">구매 신청하기</button>
+        {% endif %}
+                                {% else %}
+                    <!-- 버튼들을 감싸는 div 추가 -->
+                    <!-- 판매 목록 가기 버튼: 작성자일 때 표시 -->
+                    <button class="buy" onclick="window.location.href='/mydeal_views/mydealsell'">판매 목록 가기</button>
+                    <button class="deletebuy" onclick="deletePost()">삭제</button>
+                {% endif %}
+
+        <!--
+            <h5>답변</h5>
+            <div class="answer-box">
+                {% for answer in answers %}
+                <div class="answercomment">
+                    <p>{{ answer.content }}</p>
+                    <small>작성자: {{ answer.user.username }}</small> //작성자 이름 표시
+                </div>
+                {% else %}
+                <p>답변이 없습니다.</p>
+                {% endfor %}
+            </div>
+        -->
+
+            <div class="comment-box" id="commentBox">
+
+            {% for comment in comments %}
+
+            {% else %}
+                <p style="font-family: roboto; margin-top: -4px; color: dimgray;">댓글이 없습니다.</p>
+                    {% endfor %}
+            </div>
+        </div>
+    </div>
+
+    <div>
+        <textarea class="commentwrite" id="commentInput" placeholder="댓글을 추가해보세요."></textarea>
+        <button class="writebutton" onclick="submitComment()"><img src="../../static/writepen.png" style="width: 75px; height: 70px;"></button>
+    </div>
+    </div>
+
+<script>
+
+    let images = {{ post.image_filename.split(',') | tojson }};
+    let currentIndex = 0;
+
+    // 이미지 원 표시를 위한 함수
+    function createIndicators() {
+        const indicatorsContainer = document.querySelector('.image-indicators');
+        indicatorsContainer.innerHTML = ''; // 기존 원 삭제
+
+        images.forEach((_, index) => {
+            const indicator = document.createElement('div');
+            indicator.className = 'indicator';
+            indicator.addEventListener('click', () => {
+                currentIndex = index; // 클릭한 원의 인덱스로 이동
+                showImage(currentIndex);
+                updateIndicators(); // 색상 업데이트
+            });
+            indicatorsContainer.appendChild(indicator);
+        });
+
+        updateIndicators(); // 초기 상태 업데이트
+    }
+
+    // 이미지 표시 함수
+    function showImage(index) {
+        const imgElement = document.getElementById("current-image");
+        const imagePath = "{{ url_for('static', filename='uploads/') }}" + images[index].trim();
+        imgElement.src = imagePath;
+        console.log("Displaying image:", imagePath);  // 이미지 전환을 확인하는 로그 추가
+    }
+
+    // 이전 이미지 함수
+    function prevImage() {
+        currentIndex = (currentIndex - 1 + images.length) % images.length;
+        showImage(currentIndex);
+        updateIndicators(); // 색상 업데이트
+    }
+
+    // 다음 이미지 함수
+    function nextImage() {
+        currentIndex = (currentIndex + 1) % images.length;
+        showImage(currentIndex);
+        updateIndicators(); // 색상 업데이트
+    }
+
+    // 현재 인덱스에 따라 원의 색상 업데이트
+    function updateIndicators() {
+        const indicators = document.querySelectorAll('.indicator');
+        indicators.forEach((indicator, index) => {
+            if (index === currentIndex) {
+                indicator.classList.add('active'); // 활성화된 원
+            } else {
+                indicator.classList.remove('active'); // 기본 원
+            }
+        });
+    }
+
+    // 키보드 이벤트 리스너
+    document.addEventListener('keydown', (event) => {
+        if (event.key === 'ArrowLeft') {
+            prevImage();
+        } else if (event.key === 'ArrowRight') {
+            nextImage();
+        }
+    });
+
+    // 초기 이미지와 원 표시
+    createIndicators();
+    showImage(currentIndex);
+
+// 초기 이미지와 원 표시
+createIndicators();
+showImage(currentIndex);
+
+
+    function submitPurchase() {
+    var button = document.querySelector('.buy');
+    button.classList.add('clicked');
+    button.textContent = '구매 신청 완료';
+    alert("프로지피티 계좌 xxxx-xxxxxxxx-xxx 으로 30분 안에 입금을 해주세요!\n\n* 미입금 시 자동으로 구매 신청이 취소됩니다.");
+
+    var postId = {{ post.id }};
+
+    // 여기에서 postId가 제대로 들어오는지 확인하기 위해 로그를 찍습니다.
+    console.log("postId:-----------------------------------------------------", postId);
+
+    fetch('/purchasewant/submit_purchase', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ post_id: postId })
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            window.location.href = '/mydeal_views/mydealbuy'; // 구매 목록 페이지로 이동
+        } else {
+            alert(data.message);
+        }
+    });
+}
+
+
+            function submitComment() {
+                var commentText = document.getElementById('commentInput').value.trim();
+                var postId = {{ post.id }};  // 현재 게시글의 ID를 가져옴
+                if (commentText) {
+                    fetch('/add_comment', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({ content: commentText, post_id: postId })
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.message) {
+                            document.getElementById('commentInput').value = '';
+                            fetchComments();
+                        } else {
+                            alert("댓글 추가에 실패했습니다.");
+                        }
+                    });
+                } else {
+                    alert("댓글 내용을 입력하세요.");
+                }
+            }
+
+//작성자, 작성일, 내용
+            function fetchComments() {
+                var postId = {{ post.id }};  // 현재 게시글의 ID를 가져옴
+                fetch(`/get_comments/${postId}`)
+                    .then(response => response.json())
+                    .then(comments => {
+                        var commentBox = document.getElementById('commentBox');
+                        commentBox.innerHTML = '';
+                        comments.forEach(comment => {
+                            var newComment = document.createElement('div');
+                            newComment.className = 'commentcomment';
+                            newComment.innerHTML = `
+                                <img src="../../static/profilepic.png" class="commentpic">
+                                <div class="text-wrapper">
+                                    <p class="comment-name">${comment.username}</p> 
+                                    <p class="comment-text">${comment.content}</p>
+                                    <small class="date"> ${new Date(comment.created_at).toLocaleString('default', { year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit' })}</small>
+                                </div>
+                            `;
+                            commentBox.appendChild(newComment);
+                        });
+                    });
+            }
+
+
+
+
+
+
+    // 삭제 확인 및 요청 처리
+    function deletePost() {
+        if (confirm('정말 이 게시글을 삭제하시겠습니까?')) {
+            var postId = {{ post.id }};  // 현재 게시글의 ID를 가져옴
+            fetch(`/delete_post/${postId}`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            })
+            .then(response => {
+                if (response.status === 204) {
+                    // 삭제 성공 시 홈으로 리디렉션
+                    window.location.href = '/home';  // 홈으로 리디렉션
+                } else {
+                    alert('게시글 삭제에 실패했습니다. 다시 시도해 주세요.');
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('오류가 발생했습니다. 다시 시도해 주세요.');
+            });
+        }
+    }
+
+
+</script>
+</body>
+</html>

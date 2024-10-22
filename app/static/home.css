@@ -1,0 +1,190 @@
+/* 페이지 레이아웃 기본 설정 */
+.body {
+
+  display: flex;
+  flex-direction: row;
+
+}
+
+/* 스크롤바 숨기기 (웹킷 기반 브라우저에서만 작동) */
+body::-webkit-scrollbar {
+  display: none;
+}
+
+.redred{
+  /* Ellipse 16 */
+
+  z-index: -1;
+  position: absolute;
+  width: 339px;
+  height: 335px;
+  top: 62px;
+  background: #F65757;
+  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+  border-radius: 100%;
+  left:1226px;
+
+}
+
+.mainpage::-webkit-scrollbar {
+  display: none;
+}
+
+.posts {
+  position: absolute;
+  left: 34px;
+  display: flex; /* Flexbox를 사용하여 자식 요소들을 배치 */
+  flex-wrap: wrap; /* 요소가 넘칠 경우 다음 줄로 이동 */
+}
+
+.post {
+  margin: 10px; /* 각 포스트 사이에 여백 추가 */
+  overflow: visible; /* 내용이 넘칠 경우 잘리도록 설정 */
+  display: flex; /* 내부 요소를 flex로 설정 */
+  display: block; /* 블록 요소로 설정하여 아래 여백 제거 */
+  cursor: pointer; /* 커서를 포인터로 변경 */
+}
+
+.post img {
+  width: 295px;
+  height: auto; /* 비율에 맞춰 자동 조절 */
+  border-radius: 16px; /* 둥글게 만들기 */
+  display: block; /* 블록 요소로 설정하여 아래 여백 제거 */
+}
+
+.post-title {
+  /* M3/title/small */
+  font-family: 'roboto';
+  font-style: bold;
+  font-weight: 500;
+  font-size: 16px;
+  letter-spacing: 0.1px;
+
+  color: #1D1B20;
+  
+  margin-bottom: 10px; /* 아래 여백을 10px로 설정 */
+}
+
+.post-price {
+  position: absolute;
+  font-family: 'Roboto';
+  font-style: normal;
+  font-weight: 400;
+  font-size: 12px;
+  letter-spacing: 0.4px;
+
+  /* M3/sys/light/on-surface-variant */
+  color: #49454F;
+
+  /* Inside auto layout */
+  flex: none;
+  order: 1;
+  align-self: stretch;
+  flex-grow: 0;
+  
+  margin-top: -10px; /* 상단 여백을 0으로 설정하여 제목과 가격 간의 간격을 조정 */
+}
+
+.post p {
+    font-size: 14px; /* 가격 폰트 크기 설정 */
+}
+
+/* 링크 스타일 */
+.post-title {
+
+  cursor: pointer;
+
+}
+
+.topappbar{
+
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  padding: 0px 0px 24px;
+  gap: 4px;
+
+  position: absolute;
+  width: 1349px;
+  height: 140px;
+  left: 24px;
+  top: 81px;
+
+}
+
+.username{
+
+  /* 안녕하세요, 익명의 뽀삐 님. */
+
+  position: absolute;
+  width: 338px;
+  height: 21px;
+  left: 50px;
+  top: 10px;
+
+  /* M3/body/medium */
+  font-family: 'Arial';
+  font-style: normal;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 20px;
+  /* or 143% */
+  letter-spacing: 0.25px;
+
+  color: #000000;
+
+}
+
+.maintext {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  
+  width: 1349px;
+  height: 116px;
+
+  position: relative;  /* 위치 조정을 위해 relative 설정 */
+  left: 50px;         /* 왼쪽으로부터 54px 떨어지도록 설정 */
+  top: 35px;
+
+  order: 1;
+  align-self: stretch;
+  flex-grow: 0;
+
+  margin-top: 40px; /* .username 높이만큼 추가 여백 */
+}
+
+#searchInput {
+  padding: 10px 20px 10px 40px;
+  width: 220px; /* 원하는 너비로 조정 */
+  border: 1px solid #F1F1F1;
+  border-radius: 25px;
+  outline:none;
+  float: right;
+  margin-right: 20px;
+  margin-bottom: 10px;
+  background-color: #f1f1f1; /* 서치바 배경색 */
+  background-image: url('search.png'); /* 이미지 설정 */
+  background-repeat: no-repeat; /* 반복하지 않음 */
+  background-position: 10px center; /* 왼쪽에 배치 */
+  background-size: 20px;
+}
+
+#searchButton {
+  padding: 10px;
+  margin-right: 5px;
+  background-color: #007BFF; /* 원하는 색으로 조정 */
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  visibility: hidden;
+}
+
+#noResults{
+  display: none; /* 기본적으로 숨김 */
+  font-size: 22px;
+  font-family: roboto;
+  text-align: left;
+  margin-left: 54px;
+}

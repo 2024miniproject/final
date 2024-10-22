@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>서비스 소개</title>
+    <meta charset="utf-8"
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ url_for('static', filename='bar.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='info.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='themebody.css') }}">
+
+</head>
+
+
+<body>
+    <div class="mainpage"><div>
+    <!-- 사이드바 -->
+    <div class="sidebar">
+        <div class="logo">
+            <img src="{{ url_for('static', filename='logo.png') }}" alt="Logo">
+            <button class="plus-button" onclick="location.href='{{ url_for('write_views.write') }}'">+</button>
+        </div>
+        <ul class="menu">
+            <li><a href="#"><span class="icon" onclick="location.href='/home'"><img src="../../static/logologo.png" style="width:52px"></span> Home</a></li>
+            <li><a href="#"><span class="icon" onclick="location.href='/mydeal_views/mydealbuy'"><img src="../../static/logologo.png" style="width:52px"></span> My deal</a></li>
+            <li><a href="#"><span class="icon" onclick="location.href='/information'"><img src="../../static/logologo.png" style="width:52px"></span> Info</a></li>
+            <form action="{{ url_for('auth.logout') }}" method="post" style="display:inline;">
+                <button type="submit" class="logout">LOGOUT</button>
+            </form>
+        </ul>
+    </div>
+
+    <div class="topappbar">
+        <div class="headline">
+        <h1 class="titleinfo">사물함 위치 약도 및 이용 안내</h1>
+        </div>
+    </div>
+
+    <div class="content">
+        <p class="moremore">사물함 위치</p>
+        <p class="submore">이용 안내</p>
+        <img src="{{ url_for('static', filename='map.png') }}" class="map" alt="덕성여대 지도">
+
+        <div class="backsq"></div>
+        <p class="text">
+            <strong>Q. 거래 방식은 어떻게 되나요?</strong><br>
+            무인으로 물건을 거래할 수 있는 덕성여대 사물함 거래 플랫폼이에요. 2023년부터 시작하여 현재 전국 56390239개 지점을 가지고 있답니다.
+            <br>
+            <br>
+            <strong>Q. 거래 방식은 어떻게 되나요?</strong><br>
+            우선, 게시글에서 거래하기 버튼을 눌러요.<br>
+            그리고 정해진 절차를 따라 판매자에게 비용을 입금하면 판매자가 3일 이내 물건을 넣어둔답니다.
+            이후 물건을 수령한 뒤, 수령되었음을 확인 창에서 누르면 판매자의 계좌로 바로 금액이 입금되어요.
+        </p>
+    </div>     
+    <div class="redred"></div>
+</body>
+</html>

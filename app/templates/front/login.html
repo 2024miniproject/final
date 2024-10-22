@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>welcome</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='login.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='popup.css') }}"> <!-- 팝업 CSS 파일 링크 -->
+    <script src="{{ url_for('static', filename='popup.js') }}" defer></script> <!-- 팝업 JS 파일 링크 -->
+
+    <style>
+        body {
+            background-color: white;
+            overflow: hidden;
+        }
+    </style>
+</head>
+<body>
+
+    <!--제목-->
+    <h1 class="title">덕성여대 무인장터<br>프로 GPT</h1>
+
+    <!--부제-->
+    <p class="subtitle">살되 네 생명을 살아라<br>생각하되 네 생각으로 하여라<br>알되 네가 깨달아 알아라</p>
+
+    <!-- 원 1 -->
+    <div style="position: absolute; width: 544px; height: 422px; left: 152px; top: 733px; background: #4381FB; border-radius: 50%;"></div>
+    <!-- 원 2 -->
+    <div style="position: absolute; width: 321px; height: 331px; left: 520px; top: 649px; background: #4381FB; border-radius: 50%;"></div>
+
+    <!-- 사각형1 -->
+    <div class="backsqr1"></div>
+
+    <!--사각형 2-->
+    <div class="backsqr2"></div>
+
+    <!-- 마스크 처리 배경 -->
+    <div class="shape-group"
+         style="z-index: 5; position: absolute; width: 791px; height: 606px; left: 250px; top: 0; mix-blend-mode: screen;">
+        <!-- 마스크 원 1 -->
+        <div style="z-index: 5; position: absolute; width: 466px; height: 358px; border-radius: 50%; background: #F65757;"></div>
+
+        <!-- 마스크 원 2 -->
+        <div style="z-index: 5; position: absolute; width: 541px; height: 524px; border-radius: 50%; background: #F65757;"></div>
+    </div>
+
+    <!-- 로그인 폼 -->
+    <form class="login" method="post" action="{{ url_for('auth.login') }}">
+        {{ form.hidden_tag() }} <!-- CSRF 보호를 위한 hidden_tag -->
+
+        <!-- 이메일 입력 -->
+        <p class="idtext">e-mail</p>
+        {{ form.email(class="idsubmit", placeholder="이메일을 입력하세요") }}
+    
+
+        <!-- 비밀번호 입력 -->
+        <p class="pwtext">password</p>
+        {{ form.password(class="pwsubmit", placeholder="비밀번호를 입력하세요") }}
+        
+        <!-- 꾸밈선 -->
+        <div style="z-index: 3; position: absolute; left:800.5px; top: 334px; width: 387px; height: 1px; background-color:#CAC4D0;"></div>
+
+        <!-- 로그인하기 버튼 -->
+        <button type="submit" class="loginbutton">로그인하기</button>
+
+        <script>
+            window.onload = function() {
+                // 이메일 오류가 있을 경우 alert 호출
+                {% if form.email.errors %}
+                    alert("올바르지 않은 이메일 주소입니다.");
+                {% endif %}
+        
+                {% with messages = get_flashed_messages(with_categories=true) %}
+                    {% if messages %}
+                        {% for category, message in messages %}
+                            alert("{{ message | e }}");  // HTML 이스케이프
+                        {% endfor %}
+                    {% endif %}
+                {% endwith %}
+            };
+        </script>
+    </form>
+
+    <!-- 회원가입창 -->
+    <p class="signup">아직 회원이 아니신가요?</p>
+    <br>
+    <a href="{{ url_for('auth.signup') }}" class="signupbutton">회원가입</a> <!-- auth/signup.html로 이동 -->
+
+
+
+</body>
+</html>
